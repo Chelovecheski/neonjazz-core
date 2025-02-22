@@ -2,7 +2,6 @@ package org.chelobyte.neojazzcore.util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
-import java.util.Optional;
 import org.chelobyte.neojazzcore.annotation.IsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +23,14 @@ public final class EnvReader {
         LOGGER.debug("EnvReader has been successfully initialized");
     }
 
-    public Optional<String> getTOKEN() {
+    public String getTOKEN() {
         LOGGER.debug("Attempting to get token from property: {}", tokenPropertyValue);
 
         try {
-            return Optional.ofNullable(DOTENV.get(tokenPropertyValue));
+            return DOTENV.get(tokenPropertyValue);
         } catch (Exception e) {
             LOGGER.error("Error getting token", e);
-            return Optional.empty();
+            return " ";
         }
     }
 }
