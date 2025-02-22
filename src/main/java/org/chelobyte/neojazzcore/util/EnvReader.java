@@ -25,12 +25,12 @@ public final class EnvReader {
     }
 
     public Optional<String> getTOKEN() {
-        LOGGER.debug("Attempting to get token from property {}", tokenPropertyValue);
+        LOGGER.debug("Attempting to get token from property: {}", tokenPropertyValue);
 
         try {
             return Optional.ofNullable(DOTENV.get(tokenPropertyValue));
         } catch (Exception e) {
-            LOGGER.error("Error getting token: {}", e);
+            LOGGER.error("Error getting token", e);
             return Optional.empty();
         }
     }
