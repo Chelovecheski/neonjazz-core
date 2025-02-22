@@ -10,7 +10,8 @@ import jakarta.annotation.PostConstruct;
 
 @IsBean
 public final class EnvReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EnvReader.class);
+    private static final Logger LOGGER =
+        LoggerFactory.getLogger(EnvReader.class);
 
     @Value("${token}")
     private String tokenPropertyValue;
