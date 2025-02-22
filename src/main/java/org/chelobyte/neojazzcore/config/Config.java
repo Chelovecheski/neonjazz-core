@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import net.dv8tion.jda.api.JDABuilder;
+
 @Configuration
 @PropertySource("classpath:application.properties")
 public class Config {
@@ -16,12 +18,22 @@ public class Config {
     @Value("${token}")
     private String tokenPropertyValue;
 
-    @Bean
+    @Bean("envReader")
     public EnvReader envReader() {
         try {
             return new EnvReader(tokenPropertyValue);
         } catch (Exception e) {
             LOGGER.error("Error creating EnvReader", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean("api")
+    public JDABuilder jdaBuilder(EnvReader envReader) {
+        try {
+            return JDABuilder.createDefault(envReader.getTOKEN());
+        } catch (Exception e) {
+            LOGGER.error("Error creating JDA builder", e);
             throw new RuntimeException(e);
         }
     }
