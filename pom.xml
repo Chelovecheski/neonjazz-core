@@ -6,7 +6,7 @@
 
   <groupId>org.chelobyte</groupId>
   <artifactId>neonjazz-core</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-alpha.1</version>
 
   <name>neonjazz-core</name>
   <url>http://www.example.com</url>
