@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 @IsBean
-public class OnSlashCommandListener extends ListenerAdapter {
+public final class OnSlashCommandListener extends ListenerAdapter {
     private static final Logger LOGGER
         = LoggerFactory.getLogger(OnSlashCommandListener.class);
 
