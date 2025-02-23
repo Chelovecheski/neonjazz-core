@@ -13,7 +13,7 @@ abstract class Application {
     private static final Logger LOGGER
         = LoggerFactory.getLogger(Application.class);
 
-    protected AnnotationConfigApplicationContext context;
+    protected static AnnotationConfigApplicationContext context;
     protected JDABuilder apiBuilder;
 
     public void enableIntents(GatewayIntent... intents) {

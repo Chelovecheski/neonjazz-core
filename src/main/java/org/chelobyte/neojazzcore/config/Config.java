@@ -1,18 +1,18 @@
 package org.chelobyte.neojazzcore.config;
 
-import org.chelobyte.neojazzcore.listener.OnSlashCommandListener;
-import org.chelobyte.neojazzcore.listener.factory.SlashCommandsFactory;
 import org.chelobyte.neojazzcore.util.EnvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 import net.dv8tion.jda.api.JDABuilder;
 
 @Configuration
+@Import(ListenersConfig.class)
 @PropertySource("classpath:application.properties")
 public class Config {
     private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
@@ -26,17 +26,6 @@ public class Config {
             return new EnvReader(tokenPropertyValue);
         } catch (Exception e) {
             LOGGER.error("Error creating EnvReader", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Bean("slashCommandsListener")
-    public OnSlashCommandListener slashCommandsListener() {
-        try {
-            return new OnSlashCommandListener(
-                    SlashCommandsFactory.getSlashCommands());
-        } catch (Exception e) {
-            LOGGER.error("Error creating OnSlashCommandListener", e);
             throw new RuntimeException(e);
         }
     }

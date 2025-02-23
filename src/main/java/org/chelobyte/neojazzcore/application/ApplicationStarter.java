@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
 public final class ApplicationStarter extends Application {
@@ -19,10 +18,6 @@ public final class ApplicationStarter extends Application {
             apiBuilder = context.getBean("api", JDABuilder.class);
 
             apiBuilder.build();
-
-            LOGGER.debug("Application has been successfully built");
-
-            ((JDA) apiBuilder).awaitReady();
 
             LOGGER.info("Application has been successfully started");
         } catch (Exception e) {
