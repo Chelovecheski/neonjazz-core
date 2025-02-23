@@ -1,8 +1,9 @@
 package org.chelobyte.neojazzcore.listener.command.slash;
 
-import java.security.Permission;
+import java.util.Collection;
 import java.util.List;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -34,7 +35,7 @@ public abstract class SlashCommand {
         return options;
     }
 
-    public List<Permission> getPermissions() {
+    public Collection<Permission> getPermissions() {
         return permissions;
     }
 }

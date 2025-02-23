@@ -2,6 +2,7 @@ package org.chelobyte.neojazzcore.application;
 
 import org.chelobyte.neojazzcore.config.Config;
 import org.chelobyte.neojazzcore.exception.ApplicationBuildException;
+import org.chelobyte.neojazzcore.util.EnvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,13 +15,19 @@ abstract class Application {
         = LoggerFactory.getLogger(Application.class);
 
     protected static AnnotationConfigApplicationContext context;
+
     protected JDABuilder apiBuilder;
+
+    public Application() {
+        context = new AnnotationConfigApplicationContext(Config.class);
+        EnvReader envReader = context.getBean("envReader", EnvReader.class);
+
+        apiBuilder = JDABuilder.createDefault(envReader.getTOKEN());
+        context.close();
+    }
 
     public void enableIntents(GatewayIntent... intents) {
         try {
-            context = new AnnotationConfigApplicationContext(Config.class);
-            apiBuilder = context.getBean("api", JDABuilder.class);
-
             for (GatewayIntent intent : intents) {
                 apiBuilder.enableIntents(intent);
             }
@@ -29,16 +36,11 @@ abstract class Application {
         } catch (Exception e) {
             LOGGER.error("Error enabling intents", e);
             throw new ApplicationBuildException("Error enabling intents");
-        } finally {
-            context.close();
         }
     }
 
     public void addEventListeners(Object... listeners) {
         try {
-            context = new AnnotationConfigApplicationContext(Config.class);
-            apiBuilder = context.getBean("api", JDABuilder.class);
-
             for (Object listener : listeners) {
                 apiBuilder.addEventListeners(listener);
             }
@@ -47,8 +49,6 @@ abstract class Application {
         } catch (Exception e) {
             LOGGER.error("Error adding event listener", e);
             throw new ApplicationBuildException("Error adding event listener");
-        } finally {
-            context.close();
         }
     }
 }
