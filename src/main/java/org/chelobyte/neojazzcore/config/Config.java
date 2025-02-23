@@ -1,5 +1,7 @@
 package org.chelobyte.neojazzcore.config;
 
+import org.chelobyte.neojazzcore.listener.OnSlashCommandListener;
+import org.chelobyte.neojazzcore.listener.factory.SlashCommandsFactory;
 import org.chelobyte.neojazzcore.util.EnvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,17 @@ public class Config {
             return new EnvReader(tokenPropertyValue);
         } catch (Exception e) {
             LOGGER.error("Error creating EnvReader", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean("slashCommandsListener")
+    public OnSlashCommandListener slashCommandsListener() {
+        try {
+            return new OnSlashCommandListener(
+                    SlashCommandsFactory.getSlashCommands());
+        } catch (Exception e) {
+            LOGGER.error("Error creating OnSlashCommandListener", e);
             throw new RuntimeException(e);
         }
     }
