@@ -12,7 +12,7 @@ public class SomeSlashCommandStub extends SlashCommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, long requestId) {
         return;
     }
 }

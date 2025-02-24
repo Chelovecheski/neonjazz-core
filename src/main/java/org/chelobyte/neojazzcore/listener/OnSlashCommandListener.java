@@ -59,16 +59,19 @@ public final class OnSlashCommandListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        long requestId = System.currentTimeMillis();
+
         LOGGER.debug(
-                "Slash command has been triggered /{} <{}>. User: {}#{} ({}). Channel: {} ({})",
-                event.getName(), event.getOptions(), event.getUser().getName(),
+                "Slash command has been triggered /{} <{}>. User: {}#{} ({}). Channel: {} ({}) | Request ID: {}",
+                        event.getName(), event.getOptions(), event.getUser().getName(),
                 event.getUser().getDiscriminator(), event.getUser().getId(),
-                event.getChannel().getName(), event.getChannel().getId());
+                event.getChannel().getName(), event.getChannel().getId(),
+                requestId);
 
         final SlashCommand COMMAND = commands.get(event.getName());
 
         if (COMMAND != null) {
-            COMMAND.execute(event);
+            COMMAND.execute(event, requestId);
         } else {
             throw new CommandNotFound();
         }

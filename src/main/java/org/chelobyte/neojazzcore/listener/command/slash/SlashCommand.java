@@ -21,7 +21,8 @@ public abstract class SlashCommand {
         this.permissions = permissions;
     }
 
-    public abstract void execute(SlashCommandInteractionEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event,
+            long requestId);
 
     public String getName() {
         return name;
