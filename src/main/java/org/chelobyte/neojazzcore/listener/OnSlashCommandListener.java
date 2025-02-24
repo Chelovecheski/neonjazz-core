@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.chelobyte.neojazzcore.annotation.IsBean;
 import org.chelobyte.neojazzcore.exception.ApplicationBuildException;
+import org.chelobyte.neojazzcore.exception.CommandNotFound;
 import org.chelobyte.neojazzcore.listener.command.slash.SlashCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,23 @@ public final class OnSlashCommandListener extends ListenerAdapter {
         }
     }
 
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        LOGGER.debug(
+                "Slash command has been triggered /{} <{}>. User: {}#{} ({}). Channel: {} ({})",
+                event.getName(), event.getOptions(), event.getUser().getName(),
+                event.getUser().getDiscriminator(), event.getUser().getId(),
+                event.getChannel().getName(), event.getChannel().getId());
+
+        final SlashCommand COMMAND = commands.get(event.getName());
+
+        if (COMMAND != null) {
+            COMMAND.execute(event);
+        } else {
+            throw new CommandNotFound();
+        }
+    }
+
     private void updateCommands(Guild guild) {
         guild.updateCommands().addCommands(getListOfCommands())
                 .queue(success -> {
@@ -73,24 +91,5 @@ public final class OnSlashCommandListener extends ListenerAdapter {
                         .setDefaultPermissions(DefaultMemberPermissions
                                 .enabledFor(cmd.getPermissions())))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        LOGGER.debug(
-                "Slash command has been triggered /{} <{}>. User: {}#{} ({}). Channel: {} ({})",
-                event.getName(), event.getOptions(), event.getUser().getName(),
-                event.getUser().getDiscriminator(), event.getUser().getId(),
-                event.getChannel().getName(), event.getChannel().getId());
-
-        try {
-            final SlashCommand COMMAND = commands.get(event.getName());
-
-            if (COMMAND != null) {
-                COMMAND.execute(event);
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error executing slash command", e);
-        }
     }
 }
